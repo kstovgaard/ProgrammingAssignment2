@@ -1,15 +1,37 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This file contains functions to create and 
+## apply a specialized matrix, with the ability
+## of caching it's calculated inverse for later
+## retrievel.
 
-## Write a short comment describing this function
+
+## Function to create a matrix able to cache it's
+## inverse, once calculated. Input matrix must
+## be square and invertable.
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    m <- NULL
+    set <- function(y) {
+        a <<- y
+        m <<- NULL
+    }
+    get <- function() a
+    setinverse <- function(solve) m <<- solve
+    getinverse <- function() m
 }
 
 
-## Write a short comment describing this function
+## Function to calculate the inverse of a matrix,
+## using a cached result if available.
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    ## Return a matrix that is the inverse of 'x'
+    m <- x$getinverse()
+    if(!is.null(m)) {
+        message("returning cached inverse matrix")
+        return(m)
+    }
+    data <- x$get()
+    m <- mean(data, ...)
+    x$setinverse(m)
+    m
 }
